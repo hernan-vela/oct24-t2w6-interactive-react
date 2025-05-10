@@ -1,14 +1,19 @@
 import React, { useEffect, useState } from 'react'
 import '../App.css'
+import { useParams } from 'react-router-dom';
 
 
 
 export function PokemonSearcher(){
 
+  // let params = useParams();
+  // console.log(params.searchTerm);
+  let {searchTerm} = useParams();
+
   // let [pokemonData, setPokemonData] = useState({});
   let [pokemonName, setPokemonName] = useState("");
   let [pokemonSpriteUrl, setPokemonSpriteUrl] = useState("");
-  let [_, setPokemonId] = useState(0);
+  // let [_, setPokemonId] = useState(0);
   let [pokemonSearchTerm, setPokemonSearchTerm] = useState("");
 
 
@@ -16,27 +21,34 @@ export function PokemonSearcher(){
   useEffect(() => {
     console.log("Use effect says hello world!");
 
+    if (searchTerm){
+      setPokemonSearchTerm(searchTerm);
+      getSpecificPokemon(searchTerm);
+    } else {
+      getRandomPokemon();
+    }
 
-    getRandomPokemon();
+
+    
 
     // Return inside useeffect is equivalent to componentWillUnmount
-    return (() => {
-      console.log("Component is unmounting now.");
-    });
+    // return (() => {
+    //   console.log("Component is unmounting now.");
+    // });
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // equivalent to componentDidUpdate
-  useEffect(() => {
-    console.log("Use effect says hello world! on re-render");
+  // useEffect(() => {
+  //   console.log("Use effect says hello world! on re-render");
     
-  });
+  // });
 
-  // equivalent to componentDidUpdate for a specific variable
-  useEffect(() => {
-    console.log("Use effect says hello world! on update of pokemonName");
-  }, [pokemonName]);
+  // // equivalent to componentDidUpdate for a specific variable
+  // useEffect(() => {
+  //   console.log("Use effect says hello world! on update of pokemonName");
+  // }, [pokemonName]);
 
 
 
@@ -59,7 +71,7 @@ export function PokemonSearcher(){
 
     setPokemonName(data.name);
     setPokemonSpriteUrl(data.sprites.other.home.front_default);
-    setPokemonId(data.id);
+    // setPokemonId(data.id);
 
     // setPokemonData((previousState) => {
     //   return {
@@ -123,121 +135,121 @@ export function PokemonSearcher(){
 }
 
 
-class App extends React.Component {
-  constructor(){
-    super();
+// class App extends React.Component {
+//   constructor(){
+//     super();
 
-    this.state = {
-      pokemonId: 0,
-      pokemonName: "",
-      pokemonSpriteUrl: "",
-      pokemonSearchTerm: ""
-    }
+//     this.state = {
+//       pokemonId: 0,
+//       pokemonName: "",
+//       pokemonSpriteUrl: "",
+//       pokemonSearchTerm: ""
+//     }
 
-    this.getRandomPokemon = this.getRandomPokemon.bind(this);
-  }
+//     this.getRandomPokemon = this.getRandomPokemon.bind(this);
+//   }
 
-  async componentDidMount(){
-    console.log("Component mounted.");
+//   async componentDidMount(){
+//     console.log("Component mounted.");
 
-    this.getRandomPokemon();
+//     this.getRandomPokemon();
     
-  }
+//   }
 
-  componentDidUpdate(){
-    console.log(this.state);
-  }
+//   componentDidUpdate(){
+//     console.log(this.state);
+//   }
 
-  componentWillUnmount(){
-    console.log("API stuff is all done, goodbye!");
-  }
+//   componentWillUnmount(){
+//     console.log("API stuff is all done, goodbye!");
+//   }
 
-  // exampleFunctionInClass () {
-  // }
+//   // exampleFunctionInClass () {
+//   // }
 
-  async getRandomPokemon () {
-    let randomPokemonId = Math.floor(Math.random() * 1025) + 1;
-    console.log("Random Pokemon ID to get is: " + randomPokemonId);
+//   async getRandomPokemon () {
+//     let randomPokemonId = Math.floor(Math.random() * 1025) + 1;
+//     console.log("Random Pokemon ID to get is: " + randomPokemonId);
 
-   this.getSpecificPokemon(randomPokemonId);
-  }
-
-
-  async getSpecificPokemon(targetPokemonValue){
-
-    let response = await fetch("https://pokeapi.co/api/v2/pokemon/" + targetPokemonValue);
-    let data = await response.json();
-
-    console.log(data);
-
-    this.setState((previousState) => {
-      return {
-        // Guarantee that previous state is all kept
-        ...previousState,
-        // pokemonId: previousState.pokemonId,
-        // And then overwrite the specific bits that we want to update
-        pokemonName: data.name,
-        pokemonId: data.id,
-        pokemonSpriteUrl: data.sprites.other.home.front_default
-      }
-    });
-  }
+//    this.getSpecificPokemon(randomPokemonId);
+//   }
 
 
+//   async getSpecificPokemon(targetPokemonValue){
+
+//     let response = await fetch("https://pokeapi.co/api/v2/pokemon/" + targetPokemonValue);
+//     let data = await response.json();
+
+//     console.log(data);
+
+//     this.setState((previousState) => {
+//       return {
+//         // Guarantee that previous state is all kept
+//         ...previousState,
+//         // pokemonId: previousState.pokemonId,
+//         // And then overwrite the specific bits that we want to update
+//         pokemonName: data.name,
+//         pokemonId: data.id,
+//         pokemonSpriteUrl: data.sprites.other.home.front_default
+//       }
+//     });
+//   }
 
 
-  render() {
-    return (
-      <>
-        <h1>This is a class component!</h1>
 
-        {/* <button onClick={(event) => {this.getRandomPokemon(event)}} > */}
-        {/* <button onClick={() => {this.getRandomPokemon()}} > */}
-        <button onClick={this.getRandomPokemon} >
-          Get a random Pokemon
-        </button>
 
-        <section>
-          <label htmlFor="pokemonNameInput">Pokemon to search for:</label>
-          <input 
-            type="text" 
-            name="pokemonNameInput" 
-            id="pokemonNameInput" 
-            value={this.state.pokemonSearchTerm} 
-            onChange={(event) => {
-              this.setState((previousState) => {
-                return {
-                  ...previousState,
-                  pokemonSearchTerm: event.target.value
-                }
-              })
-            }}
-            onKeyDown={(event) => {
-              if (event.key === "Enter") {
-                this.getSpecificPokemon(this.state.pokemonSearchTerm);
-              }
-            }}
-          />
-          <button onClick={() => this.getSpecificPokemon(this.state.pokemonSearchTerm)}>
-            Search!
-          </button>
-        </section>
+//   render() {
+//     return (
+//       <>
+//         <h1>This is a class component!</h1>
 
-        {this.state.pokemonName.length > 0 && 
-        <h1>
-          {this.state.pokemonName}
-        </h1>
-        }
+//         {/* <button onClick={(event) => {this.getRandomPokemon(event)}} > */}
+//         {/* <button onClick={() => {this.getRandomPokemon()}} > */}
+//         <button onClick={this.getRandomPokemon} >
+//           Get a random Pokemon
+//         </button>
+
+//         <section>
+//           <label htmlFor="pokemonNameInput">Pokemon to search for:</label>
+//           <input 
+//             type="text" 
+//             name="pokemonNameInput" 
+//             id="pokemonNameInput" 
+//             value={this.state.pokemonSearchTerm} 
+//             onChange={(event) => {
+//               this.setState((previousState) => {
+//                 return {
+//                   ...previousState,
+//                   pokemonSearchTerm: event.target.value
+//                 }
+//               })
+//             }}
+//             onKeyDown={(event) => {
+//               if (event.key === "Enter") {
+//                 this.getSpecificPokemon(this.state.pokemonSearchTerm);
+//               }
+//             }}
+//           />
+//           <button onClick={() => this.getSpecificPokemon(this.state.pokemonSearchTerm)}>
+//             Search!
+//           </button>
+//         </section>
+
+//         {this.state.pokemonName.length > 0 && 
+//         <h1>
+//           {this.state.pokemonName}
+//         </h1>
+//         }
 
         
-        {this.state.pokemonSpriteUrl.length > 0 &&
-          <img src={this.state.pokemonSpriteUrl} /> 
-        }
+//         {this.state.pokemonSpriteUrl.length > 0 &&
+//           <img src={this.state.pokemonSpriteUrl} /> 
+//         }
         
 
-      </>
-    )
-  }
-}
+//       </>
+//     )
+//   }
+// }
 
-export default App
+// export default App

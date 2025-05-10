@@ -7,14 +7,24 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <PokemonSearcher />
+    {/* <PokemonSearcher /> */}
+
+
+
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<h1>Hello, homepage!</h1>} />
         <Route path="/about" element={<h1>Hello, about page!</h1>} />
-        <Route path="/pokemon" element={<PokemonSearcher />} />
+        <Route path="/pokemon" element={<PokemonSearcher />}>
+          {/* localhost:3000/pokemon */}
+          <Route index element={<PokemonSearcher />} />
+          {/* localhost:3000/pokemon/pikachu */}
+          <Route path=":searchTerm" element={<PokemonSearcher />} />
+        </Route>
+        
 
       </Routes>
     </BrowserRouter>
+    
   </StrictMode>,
 )
