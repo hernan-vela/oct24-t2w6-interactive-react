@@ -5,10 +5,10 @@ import '../App.css'
 
 export function PokemonSearcher(){
 
-  let [pokemonData, setPokemonData] = useState({});
+  // let [pokemonData, setPokemonData] = useState({});
   let [pokemonName, setPokemonName] = useState("");
   let [pokemonSpriteUrl, setPokemonSpriteUrl] = useState("");
-  let [pokemonId, setPokemonId] = useState(0);
+  let [_, setPokemonId] = useState(0);
   let [pokemonSearchTerm, setPokemonSearchTerm] = useState("");
 
 
@@ -16,16 +16,21 @@ export function PokemonSearcher(){
   useEffect(() => {
     console.log("Use effect says hello world!");
 
+
+    getRandomPokemon();
+
     // Return inside useeffect is equivalent to componentWillUnmount
     return (() => {
       console.log("Component is unmounting now.");
     });
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // equivalent to componentDidUpdate
   useEffect(() => {
     console.log("Use effect says hello world! on re-render");
+    
   });
 
   // equivalent to componentDidUpdate for a specific variable
