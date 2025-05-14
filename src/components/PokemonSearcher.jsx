@@ -118,7 +118,8 @@ export function PokemonSearcher(){
           <input 
             type="text" 
             name="pokemonNameInput" 
-            id="pokemonNameInput" 
+            data-testid="pokemonNameInput"
+            id="brokenpokemonNameInput" 
             value={pokemonSearchTerm} 
             onChange={(event) => {
               setPokemonSearchTerm(event.target.value)
