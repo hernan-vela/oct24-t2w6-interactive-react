@@ -130,7 +130,7 @@ export function PokemonSearcher(){
               }
             }}
           />
-          <button onClick={() => getSpecificPokemon(pokemonSearchTerm)}>
+          <button data-testid="specificPokemonSearchSubmitButton" onClick={() => getSpecificPokemon(pokemonSearchTerm)}>
             Search!
           </button>
         </section>
